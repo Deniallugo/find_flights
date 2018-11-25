@@ -1,0 +1,24 @@
+__pycache__/
+
+
+# Distribution / packaging
+.Python
+eggs/
+.eggs/
+lib/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environments
+.env
+.venv
+env/
+ENV/
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
