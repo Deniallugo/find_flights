@@ -1,5 +1,5 @@
 from settings import weight_seconds, weight_price, inf
-from structures import FindType, SortType
+from structures import FindType, DirectionType
 
 
 def cost_of_itinerary(itinerary, trip_type: FindType):
@@ -29,16 +29,16 @@ def possible_itinerary(from_itinerary, to_itinerary):
 
 
 def find_best_itinerary(itineraries, from_itinerary, trip_type,
-                        sort=SortType.asc):
+                        direction=DirectionType.asc):
     best_cost = float('inf')
     best_itinerary = None
     for itinerary in itineraries:
         if possible_itinerary(from_itinerary, itinerary):
             cost = cost_of_itinerary(itinerary, trip_type)
-            if sort == SortType.asc and cost < best_cost:
+            if direction == DirectionType.asc and cost < best_cost:
                 best_cost = cost
                 best_itinerary = itinerary
-            elif sort == SortType.desc and cost > best_cost:
+            elif direction == DirectionType.desc and cost > best_cost:
                 best_cost = cost
                 best_itinerary = itinerary
 
@@ -78,7 +78,7 @@ class Graph(object):
         else:
             self._graph_dict[source_vertex] = {destination_vertex: [itinerary]}
 
-    def find_best_trip(self, source, dest, trip_type, sort=SortType.asc,
+    def find_best_trip(self, source, dest, trip_type, direction=DirectionType.asc,
                        onward_trip=None):
         distances = {vertex: inf for vertex in self._graph_dict.keys()}
         vertices = list(self._graph_dict.keys())
@@ -104,7 +104,7 @@ class Graph(object):
                 from_itinerary, cost = find_best_itinerary(itineraries,
                                                            from_itinerary,
                                                            trip_type,
-                                                           sort)
+                                                           direction)
                 alternative_route = distances[current_vertex] + cost
 
                 if alternative_route < distances[neighbour]:

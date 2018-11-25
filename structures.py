@@ -35,6 +35,6 @@ class FindType(Enum):
     best = 3
 
 
-class SortType(Enum):
+class DirectionType(Enum):
     desc = 1
     asc = 2
