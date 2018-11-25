@@ -63,9 +63,11 @@ def parse_data(xml_data):
         onward_itinerary = parse_itinerary(onward_itinerary_data, total_price,
                                            last_itinerary_id + 2)
         all_itinerary.append(onward_itinerary)
-        return_itinerary = parse_itinerary(return_itinerary_data, total_price,
-                                           last_itinerary_id + 1)
-        all_itinerary.append(return_itinerary)
+        if return_itinerary_data:
+            return_itinerary = parse_itinerary(return_itinerary_data,
+                                               total_price,
+                                               last_itinerary_id + 1)
+            all_itinerary.append(return_itinerary)
         # Now we think, that we have the same currency for all itinerary
 
     return all_itinerary
