@@ -54,13 +54,20 @@ class Graph(object):
         if vertex not in self._graph_dict:
             self._graph_dict[vertex] = []
 
+    def find_double(self, itinerary):
+        already_added_paths = self._graph_dict[itinerary.Source][
+            itinerary.Destination]
+
+        return itinerary in already_added_paths
+
     def add_itinerary(self, itinerary):
         source_vertex = itinerary.Source
         destination_vertex = itinerary.Destination
         if source_vertex in self._graph_dict:
             if destination_vertex in self._graph_dict[source_vertex]:
-                self._graph_dict[source_vertex][destination_vertex].append(
-                    itinerary)
+                if not self.find_double(itinerary):
+                    self._graph_dict[source_vertex][destination_vertex].append(
+                        itinerary)
             else:
                 self._graph_dict[source_vertex][destination_vertex] = [
                     itinerary]
@@ -110,8 +117,34 @@ class Graph(object):
 
         return path
 
+    def find_all_path_recursive(self, current, edge, destination, visited,
+                                path, paths):
+
+        visited[current] = True
+        if not path or possible_itinerary(path[-1], edge):
+            path.append(edge)
+
+        if current == destination:
+            paths.append(path.copy())
+        else:
+            for i, itineraries in self._graph_dict[current].items():
+                if not visited[i]:
+                    for itinerary in itineraries:
+                        self.find_all_path_recursive(i, itinerary, destination,
+                                                     visited,
+                                                     path, paths)
+        path.pop()
+        visited[current] = False
+
     def find_all_path(self, source, dest):
-        pass
+
+        visited = {i: False for i in self._graph_dict}
+
+        path = []
+        all_paths = []
+        self.find_all_path_recursive(source, 0, dest, visited, path,
+                                     all_paths)
+        return all_paths
 
 
 def generate_graph(all_itinerary):

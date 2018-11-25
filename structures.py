@@ -9,12 +9,24 @@ Flight = namedtuple('Flight', (
     'WarningText', 'TicketType',
 ))
 
-Itinerary = namedtuple('Itinerary', (
-    'Source', 'Destination',
-    'DepartureTimeStamp', 'ArrivalTimeStamp',
-    'TotalPrice', 'Flights', 'ReturnedItinerary',
-    # 'WaitTime' Should we count it ?
-))
+
+class Itinerary(namedtuple('Itinerary', (
+        'Source', 'Destination',
+        'DepartureTimeStamp', 'ArrivalTimeStamp',
+        'TotalPrice', 'Flights', 'ReturnedItinerary',
+        # 'WaitTime' Should we count it ?
+))):
+
+    def __eq__(self, other):
+        """
+        It's possibly true, but I don't know. Of course it's not for production.
+        But there are a lot of the same Itinerary here
+        """
+        return (self.Source == other.Source and
+                self.Destination == other.Destination and
+                self.DepartureTimeStamp == other.DepartureTimeStamp and
+                self.ArrivalTimeStamp == other.ArrivalTimeStamp and
+                self.TotalPrice == other.TotalPrice)
 
 
 class FindType(Enum):

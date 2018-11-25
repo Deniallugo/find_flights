@@ -11,10 +11,14 @@ async def handle(request):
     if source and dest:
         graph = request.app['graph']
 
+        # trip = await request.app.loop.run_in_executor(
+        #     None, graph.find_best_trip, source, dest, trip_type)
         trip = await request.app.loop.run_in_executor(
-            None, graph.find_best_trip, source, dest, trip_type)
+            None, graph.find_all_path, source, dest)
+
         response = list(map(serialize, trip))
 
         return web.json_response(response)
     else:
+
         raise web.HTTPBadRequest(text='dest and source params not provided')
